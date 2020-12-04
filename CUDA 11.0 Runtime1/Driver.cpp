@@ -30,10 +30,12 @@ int main()
 	double fps = cap.get(CAP_PROP_FPS);
 	cout << "Frames per seconds : " << fps << endl;
 
+	
+
 	String window_name = "My First Video";
 
 	namedWindow(window_name, WINDOW_NORMAL); //create a window
-
+	int x = 0;
 	while (true)
 	{
 		Mat frame;
@@ -48,13 +50,13 @@ int main()
 
 		int height = frame.rows;
 		int width = frame.cols;
-
-		Sobel_CUDA(frame.data, frame.rows, frame.cols, frame.channels());
-
-		imshow(window_name, frame);
-
-
-
+		cout << "Height = " << height;
+		cout << " width = " << width;
+		Mat gray;
+		cvtColor(frame, gray, COLOR_BGR2GRAY);
+		
+		Sobel_CUDA(gray.data, gray.rows, gray.cols, gray.channels());
+		imshow(window_name, gray);
 
 		//wait for for 10 ms until any key is pressed.  
 		//If the 'Esc' key is pressed, break the while loop.

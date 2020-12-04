@@ -1,4 +1,4 @@
 #ifndef _Sobel_CUDA_
 #define _Sobel_CUDA_
-void Sobel_CUDA(unsigned char* Input_Image, int Height, int Width, int Channels);
+unsigned char* Sobel_CUDA(unsigned char* Input_Image, int Height, int Width, int channels);
 #endif
