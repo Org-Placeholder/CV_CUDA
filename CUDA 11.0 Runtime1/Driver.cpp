@@ -50,8 +50,8 @@ int main()
 
 		int height = frame.rows;
 		int width = frame.cols;
-		cout << "Height = " << height;
-		cout << " width = " << width;
+		//cout << "Height = " << height;
+		//cout << " width = " << width;
 		Mat gray;
 		cvtColor(frame, gray, COLOR_BGR2GRAY);
 		

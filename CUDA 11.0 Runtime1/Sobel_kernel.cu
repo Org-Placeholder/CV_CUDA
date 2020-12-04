@@ -51,10 +51,10 @@ unsigned char* Sobel_CUDA(unsigned char* Input_Image, int Height, int Width, int
 
     dim3 Grid_Image(Height - 2, Width - 2);
     dim3 Block_size(1, 1);
-    std::cout << horizontal[0];
+    //std::cout << horizontal[0];
     size_t shm_size = 4 * sizeof(unsigned long long);
 	Sobel_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (horizontal_CUDA, vertical_CUDA, Dev_Input_Image, Dev_Output_Image);
-    std::cout << "REACHED789";
+    //std::cout << "REACHED789";
     unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * Height * Width);
 	//copy processed data back to cpu from gpu
     cudaMemcpy(Input_Image, Dev_Output_Image, Height * Width * sizeof(unsigned char), cudaMemcpyDeviceToHost);
@@ -75,21 +75,20 @@ __global__ void Sobel_CUDA_Kernel(int* horizontal, int* vertical, unsigned char*
 {  
 
     int i = blockIdx.x + 1;
-    int x = horizontal[0];
     int j = blockIdx.y + 1;
 
     int horizontalDiff = 0;
     int verticalDiff = 0;
     
-    horizontalDiff = Dev_Input_Image[i - 1 + (j + 1) * 640] - Dev_Input_Image[i - 1 + (j - 1) * 640];
-    horizontalDiff += 2 * (Dev_Input_Image[i + (j + 1) * 640] - Dev_Input_Image[i + (j - 1) * 640]);
-    horizontalDiff = Dev_Input_Image[i + 1 + (j + 1) * 640] - Dev_Input_Image[i + 1 + (j - 1) * 640];
+    horizontalDiff = Dev_Input_Image[(i - 1) * 640 + (j + 1) ] - Dev_Input_Image[(i - 1) * 640 + (j - 1)];
+    horizontalDiff += 2 * (Dev_Input_Image[(i) * 640 + (j + 1)] - Dev_Input_Image[(i) * 640 + (j - 1)]);
+    horizontalDiff = Dev_Input_Image[(i + 1) * 640 + (j + 1)] - Dev_Input_Image[(i+1) * 640 + (j - 1) ];
 
-    verticalDiff = Dev_Input_Image[i + 1 + (j - 1) * 640] - Dev_Input_Image[i + 1 + (j + 1) * 640];
-    verticalDiff += 2 * (Dev_Input_Image[i + (j - 1) * 640] - Dev_Input_Image[i + (j + 1) * 640]);
-    verticalDiff = Dev_Input_Image[i - 1 + (j - 1) * 640] - Dev_Input_Image[i - 1 + (j + 1) * 640];
+    verticalDiff = Dev_Input_Image[(i + 1) * 640 + (j - 1)] - Dev_Input_Image[(i + 1) * 640 + (j + 1)];
+    verticalDiff += 2 * (Dev_Input_Image[(i) * 640 + (j - 1)] - Dev_Input_Image[(i) * 640 + (j + 1)]);
+    verticalDiff = Dev_Input_Image[(i - 1) * 640 + (j - 1)] - Dev_Input_Image[(i-1) * 640 + (j + 1)];
 
-    Dev_Output_Image[i - 1 + (j - 1) * 640] = sqrt((float)(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff));
+    Dev_Output_Image[(i - 1) * 640 + (j - 1)] = sqrt((float)(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff));
 
     //printf("%d", horizontal[0]);
 }
