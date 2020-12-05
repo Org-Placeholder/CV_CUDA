@@ -23,16 +23,11 @@ int main()
 		return -1;
 	}
 
-	//Uncomment the following line if you want to start the video in the middle
-	//cap.set(CAP_PROP_POS_MSEC, 300); 
-
 	//get the frames rate of the video
 	double fps = cap.get(CAP_PROP_FPS);
 	cout << "Frames per seconds : " << fps << endl;
 
-	
-
-	String window_name = "My First Video";
+	String window_name = "CV Visualization";
 
 	namedWindow(window_name, WINDOW_NORMAL); //create a window
 	int x = 0;
@@ -44,18 +39,21 @@ int main()
 		//Breaking the while loop at the end of the video
 		if (bSuccess == false)
 		{
-			cout << "Found the end of the video" << endl;
+			cout << "Stream ended :(" << endl;
 			break;
 		}
 
 		int height = frame.rows;
 		int width = frame.cols;
-		//cout << "Height = " << height;
-		//cout << " width = " << width;
+
+		//converting image to gray scale
 		Mat gray;
 		cvtColor(frame, gray, COLOR_BGR2GRAY);
 		
-		Sobel_CUDA(gray.data, gray.rows, gray.cols, gray.channels());
+		//Function call
+		Sobel_CUDA(gray.data, gray.rows, gray.cols);
+
+		//Image display
 		imshow(window_name, gray);
 
 		//wait for for 10 ms until any key is pressed.  

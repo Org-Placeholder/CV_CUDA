@@ -1,5 +1,1 @@
-﻿  Compiling CUDA source file Sobel_kernel.cu...
-  
-  D:\GitHub\CV_CUDA\CUDA 11.0 Runtime1\CUDA 11.0 Runtime1>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\HostX86\x64" -x cu   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Fdx64\Debug\vc142.pdb /FS /Zi /RTC1 /MDd " -o x64\Debug\Sobel_kernel.cu.obj "D:\GitHub\CV_CUDA\CUDA 11.0 Runtime1\CUDA 11.0 Runtime1\Sobel_kernel.cu" 
-  Sobel_kernel.cu
-  CUDA 11.0 Runtime1.vcxproj -> D:\GitHub\CV_CUDA\CUDA 11.0 Runtime1\x64\Debug\CUDA 11.0 Runtime1.exe
+﻿  CUDA 11.0 Runtime1.vcxproj -> D:\GitHub\CV_CUDA\CUDA 11.0 Runtime1\x64\Debug\CUDA 11.0 Runtime1.exe
