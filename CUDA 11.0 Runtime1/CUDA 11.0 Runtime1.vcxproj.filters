@@ -4,15 +4,37 @@
     <Filter Include="Sobel">
       <UniqueIdentifier>{9660e52f-a8f4-464f-b8e4-1972adf0edd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Image_Compression">
+      <UniqueIdentifier>{358bcd18-e98f-4480-8b57-37449356081f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Image_Compression\rgb2ycbcr">
+      <UniqueIdentifier>{1de5c12c-06a5-4a4c-a9dd-44ce7367cf5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Sobel_kernel.cu">
       <Filter>Sobel</Filter>
+    </CudaCompile>
+    <CudaCompile Include="rgb_to_ycbcr.cu">
+      <Filter>Image_Compression\rgb2ycbcr</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sobel_CUDA.h">
       <Filter>Sobel</Filter>
     </ClInclude>
+    <ClInclude Include="Driver.h" />
+    <ClInclude Include="entrypoint.h">
+      <Filter>Image_Compression</Filter>
+    </ClInclude>
+    <ClInclude Include="rgb_to_ycbcr.h">
+      <Filter>Image_Compression\rgb2ycbcr</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Driver.cpp" />
+    <ClCompile Include="entrypoint.cpp">
+      <Filter>Image_Compression</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

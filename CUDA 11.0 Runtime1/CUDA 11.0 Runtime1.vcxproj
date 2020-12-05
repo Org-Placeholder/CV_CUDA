@@ -79,13 +79,17 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="rgb_to_ycbcr.cu" />
     <CudaCompile Include="Sobel_kernel.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
+    <ClCompile Include="entrypoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Driver.h" />
+    <ClInclude Include="entrypoint.h" />
+    <ClInclude Include="rgb_to_ycbcr.h" />
     <ClInclude Include="Sobel_CUDA.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

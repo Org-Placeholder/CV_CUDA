@@ -5,6 +5,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "Driver.h"
 #include "Sobel_CUDA.h"
+#include "entrypoint.h"
 
 using namespace std;
 using namespace cv;
@@ -12,60 +13,69 @@ using namespace cv;
 int main()
 {
 
-	//open the video file for reading
-	VideoCapture cap(0);
-
-	// if not success, exit program
-	if (cap.isOpened() == false)
+	if (true)
 	{
-		cout << "Cannot open the video file" << endl;
-		cin.get(); //wait for any key press
-		return -1;
+		compress();
 	}
 
-	//get the frames rate of the video
-	double fps = cap.get(CAP_PROP_FPS);
-	cout << "Frames per seconds : " << fps << endl;
 
-	String window_name = "CV Visualization";
 
-	namedWindow(window_name, WINDOW_NORMAL); //create a window
-	int x = 0;
-	while (true)
+	if (false)
 	{
-		Mat frame;
-		bool bSuccess = cap.read(frame); // read a new frame from video 
+		//open the video file for reading
+		VideoCapture cap(0);
 
-		//Breaking the while loop at the end of the video
-		if (bSuccess == false)
+		// if not success, exit program
+		if (cap.isOpened() == false)
 		{
-			cout << "Stream ended :(" << endl;
-			break;
+			cout << "Cannot open the video file" << endl;
+			cin.get(); //wait for any key press
+			return -1;
 		}
 
-		int height = frame.rows;
-		int width = frame.cols;
+		//get the frames rate of the video
+		double fps = cap.get(CAP_PROP_FPS);
+		cout << "Frames per seconds : " << fps << endl;
 
-		//converting image to gray scale
-		Mat gray;
-		cvtColor(frame, gray, COLOR_BGR2GRAY);
-		
-		//Function call
-		Sobel_CUDA(gray.data, gray.rows, gray.cols);
+		String window_name = "CV Visualization";
 
-		//Image display
-		imshow(window_name, gray);
-
-		//wait for for 10 ms until any key is pressed.  
-		//If the 'Esc' key is pressed, break the while loop.
-		//If the any other key is pressed, continue the loop 
-		//If any key is not pressed withing 10 ms, continue the loop
-		if (waitKey(10) == 27)
+		namedWindow(window_name, WINDOW_NORMAL); //create a window
+		int x = 0;
+		while (true)
 		{
-			cout << "Esc key is pressed by user. Stoppig the video" << endl;
-			break;
+			Mat frame;
+			bool bSuccess = cap.read(frame); // read a new frame from video 
+
+			//Breaking the while loop at the end of the video
+			if (bSuccess == false)
+			{
+				cout << "Stream ended :(" << endl;
+				break;
+			}
+
+			int height = frame.rows;
+			int width = frame.cols;
+
+			//converting image to gray scale
+			Mat gray;
+			cvtColor(frame, gray, COLOR_BGR2GRAY);
+
+			//Function call
+			Sobel_CUDA(gray.data, gray.rows, gray.cols);
+
+			//Image display
+			imshow(window_name, gray);
+
+			//wait for for 10 ms until any key is pressed.  
+			//If the 'Esc' key is pressed, break the while loop.
+			//If the any other key is pressed, continue the loop 
+			//If any key is not pressed withing 10 ms, continue the loop
+			if (waitKey(10) == 27)
+			{
+				cout << "Esc key is pressed by user. Stoppig the video" << endl;
+				break;
+			}
 		}
 	}
-
 	return 0;
 }
