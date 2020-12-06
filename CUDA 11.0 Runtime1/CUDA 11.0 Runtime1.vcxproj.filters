@@ -4,13 +4,22 @@
     <Filter Include="Sobel">
       <UniqueIdentifier>{9660e52f-a8f4-464f-b8e4-1972adf0edd2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sobel_Naive">
+    <Filter Include="Naive_algorithms">
       <UniqueIdentifier>{a8ddb13d-d99e-43bb-9e75-03b25a0903cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Noise_reduction">
+      <UniqueIdentifier>{6c977d4a-7e1f-446e-92b4-900704181fd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Sobel_kernel.cu">
       <Filter>Sobel</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Mean_Blur_CUDA.cu">
+      <Filter>Noise_reduction</Filter>
+    </CudaCompile>
+    <CudaCompile Include="sharpen_CUDA.cu">
+      <Filter>Noise_reduction</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -19,7 +28,19 @@
     </ClInclude>
     <ClInclude Include="Driver.h" />
     <ClInclude Include="Sobel_Naive.h">
-      <Filter>Sobel_Naive</Filter>
+      <Filter>Naive_algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="mean_blur.h">
+      <Filter>Naive_algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Sharpen.h">
+      <Filter>Naive_algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="mean_blur_CUDA.h">
+      <Filter>Noise_reduction</Filter>
+    </ClInclude>
+    <ClInclude Include="sharpen_CUDA.h">
+      <Filter>Noise_reduction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
