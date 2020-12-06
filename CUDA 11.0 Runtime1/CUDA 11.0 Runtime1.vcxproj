@@ -80,6 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="Mean_Blur_CUDA.cu" />
+    <CudaCompile Include="Noise_Addition_CUDA.cu" />
     <CudaCompile Include="sharpen_CUDA.cu" />
     <CudaCompile Include="Sobel_kernel.cu" />
   </ItemGroup>
@@ -90,6 +91,7 @@
     <ClInclude Include="Driver.h" />
     <ClInclude Include="mean_blur_CUDA.h" />
     <ClInclude Include="mean_blur.h" />
+    <ClInclude Include="Noise_Addition_CUDA.h" />
     <ClInclude Include="sharpen_CUDA.h" />
     <ClInclude Include="Sharpen.h" />
     <ClInclude Include="Sobel_Naive.h" />
