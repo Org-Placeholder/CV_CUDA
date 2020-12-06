@@ -5,6 +5,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "rgb_to_ycbcr.h"
+#include "updownsample.h"
 
 using namespace std;
 using namespace cv;
@@ -23,11 +24,19 @@ void compress()
     Mat result = rgb2ycbcr(img);
     cout << "rows = " << result.rows << " columns = " << result.cols;
 
-    Mat result2 = ycbcr2rgb(result);
+    cout << "Before = " << sizeof(result.rows);
+
+    Mat result2 = downsample(result);
+
+    cout << "After = " << sizeof(result2.rows);
+
+    Mat result3 = upsample(result2);
+
+    Mat result4 = ycbcr2rgb(result3);
 
     Mat display = Mat();
     // Scaling the Image
-    cv::resize(result2, display, cv::Size(), 0.25, 0.25);
+    cv::resize(result4, display, cv::Size(), 0.25, 0.25);
 
     imshow("Display window", display);
     int k = waitKey(0); // Wait for a keystroke in the window

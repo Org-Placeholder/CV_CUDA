@@ -10,6 +10,9 @@
     <Filter Include="Image_Compression\rgb2ycbcr">
       <UniqueIdentifier>{1de5c12c-06a5-4a4c-a9dd-44ce7367cf5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Image_Compression\updownsample">
+      <UniqueIdentifier>{fb04fbaa-37f2-4bce-8fef-f1ccbb4fe2f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Sobel_kernel.cu">
@@ -17,6 +20,9 @@
     </CudaCompile>
     <CudaCompile Include="rgb_to_ycbcr.cu">
       <Filter>Image_Compression\rgb2ycbcr</Filter>
+    </CudaCompile>
+    <CudaCompile Include="updownsample.cu">
+      <Filter>Image_Compression\updownsample</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="rgb_to_ycbcr.h">
       <Filter>Image_Compression\rgb2ycbcr</Filter>
+    </ClInclude>
+    <ClInclude Include="updownsample.h">
+      <Filter>Image_Compression\updownsample</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
