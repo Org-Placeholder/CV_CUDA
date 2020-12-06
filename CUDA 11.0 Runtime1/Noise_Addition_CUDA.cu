@@ -57,15 +57,13 @@ __global__ void Salt_Pepper_Kernel(unsigned char* Dev_Input_Image, unsigned char
     int width = gridDim.y;
     
     Dev_Output_Image[(i)*width + (j)] = Dev_Input_Image[(i)*width + (j)];
-    int x, y, z;
-    x = curand(state) % 2;
-    y = curand(state) % 2;
-    z = curand(state) % 2;
-    if (x == 1 && y == 1 && z == 1)
+    int x;
+    x = curand(state) % 256;
+    if (x == 0)
     {
         Dev_Output_Image[(i)*width + (j)] = 255;
     }
-    else if (x == 0 && y == 0 && z == 1)
+    else if (x == 128)
     {
         Dev_Output_Image[(i)*width + (j)] = 0;
     }
