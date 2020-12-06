@@ -50,15 +50,15 @@ __global__ void Sobel_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char*
     int horizontalDiff = 0;
     int verticalDiff = 0;
 
-    int height = gridDim.y + 2;
+    int width = gridDim.y + 2;
 
-    horizontalDiff = Dev_Input_Image[(i - 1) * height + (j + 1) ] - Dev_Input_Image[(i - 1) * height + (j - 1)];
-    horizontalDiff += 2 * (Dev_Input_Image[(i) *height + (j + 1)] - Dev_Input_Image[(i) *height + (j - 1)]);
-    horizontalDiff = Dev_Input_Image[(i + 1) * height + (j + 1)] - Dev_Input_Image[(i+1) * height + (j - 1) ];
+    horizontalDiff = Dev_Input_Image[(i - 1) * width + (j + 1) ] - Dev_Input_Image[(i - 1) * width + (j - 1)];
+    horizontalDiff += 2 * (Dev_Input_Image[(i) *width + (j + 1)] - Dev_Input_Image[(i) *width + (j - 1)]);
+    horizontalDiff = Dev_Input_Image[(i + 1) * width + (j + 1)] - Dev_Input_Image[(i+1) * width + (j - 1) ];
 
-    verticalDiff = -Dev_Input_Image[(i - 1) * height + (j - 1)] - Dev_Input_Image[(i - 1) * height + (j + 1)];
-    verticalDiff += Dev_Input_Image[(i + 1) * height + (j + 1)] + Dev_Input_Image[(i + 1) * height + (j - 1)];
-    verticalDiff += 2 * (Dev_Input_Image[(i+1) * height + (j)] - Dev_Input_Image[(i - 1) * height + (j)]);
+    verticalDiff = -Dev_Input_Image[(i - 1) * width + (j - 1)] - Dev_Input_Image[(i - 1) * width + (j + 1)];
+    verticalDiff += Dev_Input_Image[(i + 1) * width + (j + 1)] + Dev_Input_Image[(i + 1) * width + (j - 1)];
+    verticalDiff += 2 * (Dev_Input_Image[(i+1) * width + (j)] - Dev_Input_Image[(i - 1) * width + (j)]);
 
-    Dev_Output_Image[(i - 1) * height + (j - 1)] = sqrt((float)(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff));
+    Dev_Output_Image[(i - 1) * width + (j - 1)] = sqrt((float)(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff))/4;
 }
