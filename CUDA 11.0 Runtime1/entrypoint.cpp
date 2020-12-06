@@ -23,9 +23,11 @@ void compress()
     Mat result = rgb2ycbcr(img);
     cout << "rows = " << result.rows << " columns = " << result.cols;
 
+    Mat result2 = ycbcr2rgb(result);
+
     Mat display = Mat();
     // Scaling the Image
-    cv::resize(result, display, cv::Size(), 0.25, 0.25);
+    cv::resize(result2, display, cv::Size(), 0.25, 0.25);
 
     imshow("Display window", display);
     int k = waitKey(0); // Wait for a keystroke in the window

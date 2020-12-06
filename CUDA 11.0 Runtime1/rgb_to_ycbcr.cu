@@ -8,7 +8,7 @@ using namespace cv;
 
 __global__ void rgb2ycbcr_CUDA_Kernel(unsigned char* Dev_Input_Image_r, unsigned char* Dev_Input_Image_g, unsigned char* Dev_Input_Image_b, unsigned char* Dev_Output_Image_y, unsigned char* Dev_Output_Image_cb, unsigned char* Dev_Output_Image_cr);
 
-__global__ void ycbcr2rgb_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image);
+__global__ void ycbcr2rgb_CUDA_Kernel(unsigned char* Dev_Input_Image_y, unsigned char* Dev_Input_Image_cb, unsigned char* Dev_Input_Image_cr, unsigned char* Dev_Output_Image_r, unsigned char* Dev_Output_Image_g, unsigned char* Dev_Output_Image_b);
 
 Mat rgb2ycbcr(Mat input_image)
 {
@@ -130,7 +130,7 @@ Mat ycbcr2rgb(Mat input_image)
     dim3 Block_size(1, 1);
 
     size_t shm_size = 4 * sizeof(unsigned long long);
-    rgb2ycbcr_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image_y, Dev_Input_Image_cb, Dev_Input_Image_cr, Dev_Output_Image_r, Dev_Output_Image_g, Dev_Output_Image_b);
+    ycbcr2rgb_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image_y, Dev_Input_Image_cb, Dev_Input_Image_cr, Dev_Output_Image_r, Dev_Output_Image_g, Dev_Output_Image_b);
 
     //copy processed data back to cpu from gpu
     cudaMemcpy(channels[2].data, Dev_Output_Image_r, Height * Width * sizeof(unsigned char), cudaMemcpyDeviceToHost);
@@ -192,13 +192,22 @@ __global__ void ycbcr2rgb_CUDA_Kernel(unsigned char* Dev_Input_Image_y, unsigned
 
     int height = gridDim.y;
     
-    float y = (Dev_Input_Image_y[(i * height) + j] - 16)/219;
-    float cb = (Dev_Input_Image_cb[(i * height) + j] - 128)/224;
-    float cr = (Dev_Input_Image_cr[(i * height) + j] - 128)/224;
+    float y = (Dev_Input_Image_y[(i * height) + j] - 16);
+    y /= 219;
+    float cb = (Dev_Input_Image_cb[(i * height) + j] - 128);
+    cb /= 224;
+    float cr = (Dev_Input_Image_cr[(i * height) + j] - 128);
+    cr /= 224;
 
-    float r = y * 1.0 + cb * 0.587 + cr * 0.114;
-    float g = y * 1.0 + cb * (-0.331665) + cr * 0.50059;
-    float b = y * 1.0 + cb * (-0.418531) + cr * (-0.081282);
+    float r = y * 1.0 + cb * 0 + cr * 1.402;
+    float g = y * 1.0 + cb * (-0.344136) + cr * (-0.714136);
+    float b = y * 1.0 + cb * (1.772) + cr * 0;
+
+    //printf("%d", Dev_Input_Image_y[(i * height) + j]);
+
+    r *= 255;
+    g *= 255;
+    b *= 255;
 
     Dev_Output_Image_r[(i * height) + j] = (unsigned char)r;
     Dev_Output_Image_g[(i * height) + j] = (unsigned char)g;
