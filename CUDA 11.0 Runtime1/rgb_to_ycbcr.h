@@ -5,5 +5,5 @@
 #include <opencv2/highgui/highgui.hpp>
 using namespace cv;
 Mat rgb2ycbcr(Mat input_image);
-void ycbcr2rgb(Mat input_image);
+Mat ycbcr2rgb(Mat input_image);
 #endif

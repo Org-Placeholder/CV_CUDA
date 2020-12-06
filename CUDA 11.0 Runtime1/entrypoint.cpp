@@ -21,6 +21,7 @@ void compress()
     }
     
     Mat result = rgb2ycbcr(img);
+    cout << "rows = " << result.rows << " columns = " << result.cols;
 
     Mat display = Mat();
     // Scaling the Image
