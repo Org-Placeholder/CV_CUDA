@@ -13,6 +13,9 @@
     <Filter Include="Noise_addition">
       <UniqueIdentifier>{cced2a33-a360-454a-b841-ee3a0c7e278f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gaussian_Blur">
+      <UniqueIdentifier>{95e3d330-2548-42eb-8c63-e2a9614c090b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Sobel_kernel.cu">
@@ -26,6 +29,9 @@
     </CudaCompile>
     <CudaCompile Include="Noise_Addition_CUDA.cu">
       <Filter>Noise_addition</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Gaussian_Blur.cu">
+      <Filter>Gaussian_Blur</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="Noise_Addition_CUDA.h">
       <Filter>Noise_addition</Filter>
+    </ClInclude>
+    <ClInclude Include="Gaussian_Blur.h">
+      <Filter>Gaussian_Blur</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

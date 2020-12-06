@@ -5,6 +5,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "Driver.h"
 #include "Sobel_CUDA.h"
+#include "Gaussian_Blur.h"
 
 using namespace std;
 using namespace cv;
@@ -51,7 +52,7 @@ int main()
 		cvtColor(frame, gray, COLOR_BGR2GRAY);
 		
 		//Function call
-		Sobel_CUDA(gray.data, gray.rows, gray.cols);
+		Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
 
 		//Image display
 		imshow(window_name, gray);
