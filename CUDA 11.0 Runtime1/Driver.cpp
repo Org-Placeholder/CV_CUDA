@@ -52,6 +52,7 @@ int main()
 		cvtColor(frame, gray, COLOR_BGR2GRAY);
 		
 		//Function call
+		imshow("original", gray);
 		Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
 
 		//Image display

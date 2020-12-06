@@ -62,21 +62,36 @@ __global__ void Gaussian_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsign
             {
                 if (z == 1)
                 {
-                    val += 2 * Dev_Input_Image[x * width + y];
+                    val += 24 * Dev_Input_Image[x * width + y];
                 }
                 else if (z == 2)
                 {
-                    val +=  Dev_Input_Image[x * width + y];
+                    if (l == 0 || k ==0 )
+                    {
+                        val += 6 * Dev_Input_Image[x * width + y];
+                    }
+                    else
+                    {
+                        val += 16 * Dev_Input_Image[x * width + y];
+                    }
+                }
+                else if (z == 3)
+                {
+                    val += 4 *  Dev_Input_Image[x * width + y];
+                }
+                else if (z == 4)
+                {
+                    val += Dev_Input_Image[x * width + y];
                 }
                 else
                 {
-                    val += 4 * Dev_Input_Image[x * width + y];
+                    val += 36 * Dev_Input_Image[x * width + y];
                 }
             }
         }
     }
 
-    val /= 16;
+    val /= 256;
 
     Dev_Output_Image[(i * width) + j] = val;
 }
