@@ -20,7 +20,7 @@ Mat upsample(Mat input_image)
     int new_height = Height * SAMPLE_RATIO;
     int new_width = Width * SAMPLE_RATIO;
 
-    /*for (int j = 0; j < 2; j++)
+    for (int j = 0; j < 2; j++)
     {
         unsigned char* Dev_Input_Image = NULL;
         //allocate the memory in gpu
@@ -50,7 +50,7 @@ Mat upsample(Mat input_image)
         //free gpu mempry
         cudaFree(Dev_Input_Image);
         cudaFree(Dev_Output_Image);
-    }*/
+    }
 
 
 
@@ -60,7 +60,7 @@ Mat upsample(Mat input_image)
 
 }
 
-Mat downsample(Mat input_image)
+Mat* downsample(Mat input_image)
 {
     int SAMPLE_RATIO = 4;
 
@@ -89,7 +89,11 @@ Mat downsample(Mat input_image)
     int new_height = Height / SAMPLE_RATIO;
     int new_width = Width / SAMPLE_RATIO;
 
-   
+    Mat new_channels[3];
+
+    new_channels[2].data = channels[2].data;
+    new_channels[1].data = (unsigned char*)malloc(new_height * new_width * sizeof(unsigned char));
+    new_channels[0].data = (unsigned char*)malloc(new_height * new_width * sizeof(unsigned char));
 
     for (int j = 0; j < 2; j++)
     {
@@ -113,7 +117,7 @@ Mat downsample(Mat input_image)
 
         unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * new_height * new_width);
         //copy processed data back to cpu from gpu
-        cudaMemcpy(channels[j].data, Dev_Output_Image, new_height * new_width * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+        cudaMemcpy(new_channels[j].data, Dev_Output_Image, new_height * new_width * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 
         cudaError_t cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
         if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize: %s\n", cudaGetErrorName(cudaerror));
@@ -123,9 +127,7 @@ Mat downsample(Mat input_image)
         cudaFree(Dev_Output_Image);
     }
 
-    Mat result;
-    merge(channels, 3, result);
-    return result;
+    return new_channels;
 }
 
 __global__ void Downsample_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image)

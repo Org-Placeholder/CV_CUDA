@@ -5,5 +5,5 @@
 #include <opencv2/highgui/highgui.hpp>
 using namespace cv;
 Mat upsample(Mat input_image);
-Mat downsample(Mat input_image);
+Mat* downsample(Mat input_image);
 #endif

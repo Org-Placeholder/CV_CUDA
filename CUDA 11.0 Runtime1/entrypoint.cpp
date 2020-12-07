@@ -26,18 +26,18 @@ void compress()
 
     cout << "Before = " << sizeof(result.rows);
 
-    Mat result2 = downsample(result);
+    Mat* result2 = downsample(result);
 
-    cout << "After = " << sizeof(result2.rows);
+    cout << "After = " << sizeof(result2[0].rows);
 
-    Mat result3 = upsample(result2);
+    //Mat result3 = upsample(result2[0]);
 
-    Mat result4 = ycbcr2rgb(result3);
+    //Mat result4 = ycbcr2rgb(result);
 
     Mat display = Mat();
     // Scaling the Image
-    cv::resize(result4, display, cv::Size(), 0.25, 0.25);
-
+    //cv::resize(result2[0], display, cv::Size(), 0.25, 0.25);
+    merge(result2, 3, display);
     imshow("Display window", display);
     int k = waitKey(0); // Wait for a keystroke in the window
 }
