@@ -50,7 +50,6 @@ __global__ void Gaussian_Blur_Vertical_kernel(unsigned char* Dev_Input_Image, un
     int i = blockIdx.x;
     int j = blockIdx.y;
 
-    int height = gridDim.x;
     int width = gridDim.y;
 
     float val = 0;

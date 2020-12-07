@@ -16,8 +16,14 @@
     <Filter Include="Gaussian_Blur">
       <UniqueIdentifier>{95e3d330-2548-42eb-8c63-e2a9614c090b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Gaussian_Blur_Seperated">
+    <Filter Include="Seperable_Filters">
+      <UniqueIdentifier>{327e7945-4a58-4100-a48b-ce9ed1a3f0ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Seperable_Filters\Gaussian_Blur_Seperated">
       <UniqueIdentifier>{a991a6d2-d59b-4d4e-8fc3-3a92a7ebf776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Seperable_Filters\Mean_Blur_Seperated">
+      <UniqueIdentifier>{11f75344-c54c-42a1-ae4d-e9f7babc9134}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,7 +43,10 @@
       <Filter>Gaussian_Blur</Filter>
     </CudaCompile>
     <CudaCompile Include="Gaussian_Blur_Seperated.cu">
-      <Filter>Gaussian_Blur_Seperated</Filter>
+      <Filter>Seperable_Filters\Gaussian_Blur_Seperated</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Mean_Blur_Seperated.cu">
+      <Filter>Seperable_Filters\Mean_Blur_Seperated</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +76,10 @@
       <Filter>Gaussian_Blur</Filter>
     </ClInclude>
     <ClInclude Include="Gaussian_Blur_Seperated.h">
-      <Filter>Gaussian_Blur_Seperated</Filter>
+      <Filter>Seperable_Filters\Gaussian_Blur_Seperated</Filter>
+    </ClInclude>
+    <ClInclude Include="Mean_Blur_Seperated.h">
+      <Filter>Seperable_Filters\Mean_Blur_Seperated</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

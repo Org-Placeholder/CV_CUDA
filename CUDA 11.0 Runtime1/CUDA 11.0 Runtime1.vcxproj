@@ -82,6 +82,7 @@
     <CudaCompile Include="Gaussian_Blur.cu" />
     <CudaCompile Include="Gaussian_Blur_Seperated.cu" />
     <CudaCompile Include="Mean_Blur_CUDA.cu" />
+    <CudaCompile Include="Mean_Blur_Seperated.cu" />
     <CudaCompile Include="Noise_Addition_CUDA.cu" />
     <CudaCompile Include="sharpen_CUDA.cu" />
     <CudaCompile Include="Sobel_kernel.cu" />
@@ -95,6 +96,7 @@
     <ClInclude Include="Gaussian_Blur_Seperated.h" />
     <ClInclude Include="mean_blur_CUDA.h" />
     <ClInclude Include="mean_blur.h" />
+    <ClInclude Include="Mean_Blur_Seperated.h" />
     <ClInclude Include="Noise_Addition_CUDA.h" />
     <ClInclude Include="sharpen_CUDA.h" />
     <ClInclude Include="Sharpen.h" />
