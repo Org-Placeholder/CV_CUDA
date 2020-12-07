@@ -7,6 +7,7 @@
 #include "Sobel_CUDA.h"
 #include "Gaussian_Blur.h"
 #include "Noise_Addition_CUDA.h"
+#include "Gaussian_Blur_Seperated.h"
 
 using namespace std;
 using namespace cv;
@@ -54,10 +55,10 @@ int main()
 		
 		//Function call
 		imshow("original", gray);
-		Salt_Pepper(gray.data, gray.rows, gray.cols);
-		imshow("noise", gray);
-		Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
-
+		//Salt_Pepper(gray.data, gray.rows, gray.cols);
+		//imshow("noise", gray);
+		//Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
+		Gaussian_Blur_Seperated(gray.data, gray.rows, gray.cols);
 		//Image display
 		imshow(window_name, gray);
 

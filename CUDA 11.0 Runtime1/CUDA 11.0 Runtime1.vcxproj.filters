@@ -16,6 +16,9 @@
     <Filter Include="Gaussian_Blur">
       <UniqueIdentifier>{95e3d330-2548-42eb-8c63-e2a9614c090b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gaussian_Blur_Seperated">
+      <UniqueIdentifier>{a991a6d2-d59b-4d4e-8fc3-3a92a7ebf776}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Sobel_kernel.cu">
@@ -32,6 +35,9 @@
     </CudaCompile>
     <CudaCompile Include="Gaussian_Blur.cu">
       <Filter>Gaussian_Blur</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Gaussian_Blur_Seperated.cu">
+      <Filter>Gaussian_Blur_Seperated</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="Gaussian_Blur.h">
       <Filter>Gaussian_Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="Gaussian_Blur_Seperated.h">
+      <Filter>Gaussian_Blur_Seperated</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
