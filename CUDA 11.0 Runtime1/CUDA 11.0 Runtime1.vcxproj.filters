@@ -25,6 +25,9 @@
     <Filter Include="Seperable_Filters\Mean_Blur_Seperated">
       <UniqueIdentifier>{11f75344-c54c-42a1-ae4d-e9f7babc9134}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Canny">
+      <UniqueIdentifier>{f274c948-d95a-4af0-91cf-8f34535ecac1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Sobel_kernel.cu">
@@ -47,6 +50,9 @@
     </CudaCompile>
     <CudaCompile Include="Mean_Blur_Seperated.cu">
       <Filter>Seperable_Filters\Mean_Blur_Seperated</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Canny_CUDA.cu">
+      <Filter>Canny</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="Mean_Blur_Seperated.h">
       <Filter>Seperable_Filters\Mean_Blur_Seperated</Filter>
+    </ClInclude>
+    <ClInclude Include="Canny_CUDA.h">
+      <Filter>Canny</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -79,6 +79,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="Canny_CUDA.cu" />
     <CudaCompile Include="Gaussian_Blur.cu" />
     <CudaCompile Include="Gaussian_Blur_Seperated.cu" />
     <CudaCompile Include="Mean_Blur_CUDA.cu" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Driver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Canny_CUDA.h" />
     <ClInclude Include="Driver.h" />
     <ClInclude Include="Gaussian_Blur.h" />
     <ClInclude Include="Gaussian_Blur_Seperated.h" />
