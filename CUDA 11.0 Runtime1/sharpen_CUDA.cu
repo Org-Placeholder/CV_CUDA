@@ -75,6 +75,10 @@ __global__ void Sharpen_CUDA_kernel(unsigned char* Dev_Input_Image, unsigned cha
     {
         val = 255;
     }
+    if (val < 0)
+    {
+        val = 0;
+    }
     //val /=count;
     //val *= 5;
     //printf("val = %d", val);
