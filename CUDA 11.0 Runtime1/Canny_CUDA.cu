@@ -31,7 +31,7 @@ unsigned char* Canny_CUDA(unsigned char* Input_Image, int Height, int Width) {
     cudaError_t cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
     if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize: %s\n", cudaGetErrorName(cudaerror));
     
-    int max_iter = 250;
+    int max_iter = Width/10 + 10;
     
     while (max_iter != 0)
     {

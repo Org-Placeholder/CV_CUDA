@@ -80,7 +80,7 @@ int main()
 			break;
 		}
 	}*/
-	String image_path = "D:\\GitHub\\CV_CUDA\\CUDA 11.0 Runtime1\\CUDA 11.0 Runtime1\\images\\input_image_3.jpg";
+	String image_path = "D:\\GitHub\\CV_CUDA\\CUDA 11.0 Runtime1\\CUDA 11.0 Runtime1\\images\\input_image_5.jpg";
 	//String image_path =  samples::findFile("input_images_1.jpg");
 	Mat img = imread(image_path, IMREAD_COLOR);
 	if (img.empty())
