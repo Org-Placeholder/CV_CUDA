@@ -54,7 +54,7 @@ __global__ void Mean_Blur_Vertical_kernel(unsigned char* Dev_Input_Image, unsign
 
     float val = 0;
     int count = 0;
-    for (int k = -10; k <= 10; k++)
+    for (int k = -5; k <= 5; k++)
     {
 
         int y = j + k;
@@ -81,7 +81,7 @@ __global__ void Mean_Blur_Horizontal_kernel(unsigned char* Dev_Input_Image, unsi
     int width = gridDim.y;
     float val = 0;
     int count = 0;
-    for (int k = -10; k <= 10; k++)
+    for (int k = -5; k <= 5; k++)
     {
 
         int x = i + k;
