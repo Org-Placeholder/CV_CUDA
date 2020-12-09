@@ -32,6 +32,7 @@ int main()
 	printf("9 for Gaussian Blur on a photo\n");
 	printf("10 for Sharpening on a photo\n");
 	printf("11 for Canny on a photo\n");
+	printf("12 for Mean Blur on a photo\n");
 
 	int x;
 	cin >> x;
@@ -78,24 +79,65 @@ void video_related(int task)
 		int height = frame.rows;
 		int width = frame.cols;
 
-
+		//splitting into channels
 		vector<Mat> channels(3);
-
 		split(frame, channels);
 
-		//converting image to gray scale
-		//Mat gray;
-		//cvtColor(frame, gray, COLOR_BGR2GRAY);
-
-		Mean_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
-		Mean_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
-		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
-
+		//converting image to gray scale if needed. we'll either use this or channels depending on task
+		Mat gray;
+		cvtColor(frame, gray, COLOR_BGR2GRAY);
+		
+		imshow("Original image", frame);
+		
 		Mat display;
+		switch (task)
+		{
+		case 0:
+			Mean_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
+			Mean_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
+			Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
+			merge(channels, display);
+			imshow("Mean Blurred", display);
+			break;
+		case 1:
+			Sobel_CUDA(gray.data, gray.rows, gray.cols);
+			imshow("Sobel Output", gray);
+			break;
+		case 2:
+			Salt_Pepper(channels[0].data, channels[0].rows, channels[0].cols);
+			Salt_Pepper(channels[1].data, channels[1].rows, channels[1].cols);
+			Salt_Pepper(channels[2].data, channels[2].rows, channels[2].cols);
+			merge(channels, display);
+			imshow("Added Noise", display);
+			break;
+		case 3:
+			Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
+			Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
+			Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
+			Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
+			Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+			Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+			merge(channels, display);
+			imshow("Reduced Noise", display);
+			break;
+		case 4:
+			Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
+			Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
+			Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
+			merge(channels, display);
+			imshow("Gaussian Blur", display);
+			break;
+		case 5:
+			Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
+			Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+			Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+			merge(channels, display);
+			imshow("Reduced Noise", display);
+			break;
+		}
+		
 
-		merge(channels, display);
-
-		imshow("Display window", display);
+		
 		if (waitKey(10) == 27)
 		{
 			cout << "Esc key is pressed by user. Stoppig the video" << endl;
@@ -108,7 +150,7 @@ void photo_related(int task)
 {
 	printf("Enter image path : ");
 
-	String image_path = "images\\input_image_5.jpg";
+	String image_path;
 	//String image_path = "images\\input_image_5.jpg";
 	cin >> image_path;
 
@@ -120,14 +162,69 @@ void photo_related(int task)
 		return;
 	}
 
-	imshow("Original Image", img);
+	vector<Mat> channels(3);
+	split(img, channels);
+
 	Mat gray;
 	cvtColor(img, gray, COLOR_BGR2GRAY);
-	Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
-	Sharpen_CUDA(gray.data, gray.rows, gray.cols);
-	Sobel_CUDA(gray.data, gray.rows, gray.cols);
-	Canny_CUDA(gray.data, gray.rows, gray.cols);
-	imshow("Canny Output", gray);
+
+	imshow("Original image", img);
+
+	Mat display;
+
+	switch (task)
+	{
+	case 6:
+		Sobel_CUDA(gray.data, gray.rows, gray.cols);
+		imshow("Sobel Output", gray);
+		break;
+	case 7:
+		Salt_Pepper(channels[0].data, channels[0].rows, channels[0].cols);
+		Salt_Pepper(channels[1].data, channels[1].rows, channels[1].cols);
+		Salt_Pepper(channels[2].data, channels[2].rows, channels[2].cols);
+		merge(channels, display);
+		imshow("Added Noise", display);
+		break;
+	case 8:
+		Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
+		Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
+		Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
+		Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
+		Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+		Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+		merge(channels, display);
+		imshow("Reduced Noise", display);
+		break;
+	case 9:
+		Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
+		Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
+		Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
+		merge(channels, display);
+		imshow("Gaussian Blur", display);
+		break;
+	case 10:
+		Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
+		Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+		Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+		merge(channels, display);
+		imshow("Reduced Noise", display);
+		break;
+	case 11:
+		Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
+		Sharpen_CUDA(gray.data, gray.rows, gray.cols);
+		Sobel_CUDA(gray.data, gray.rows, gray.cols);
+		Canny_CUDA(gray.data, gray.rows, gray.cols);
+		imshow("Canny Output", gray);
+		break;
+	case 12:
+		Mean_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
+		Mean_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
+		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
+		merge(channels, display);
+		imshow("Mean Blurred", display);
+		break;
+	}
+
 	int k = waitKey(0); // Wait for a keystroke in the window
 	return;
 }
