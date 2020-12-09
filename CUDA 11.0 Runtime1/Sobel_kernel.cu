@@ -60,5 +60,5 @@ __global__ void Sobel_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char*
     verticalDiff += Dev_Input_Image[(i + 1) * width + (j + 1)] + Dev_Input_Image[(i + 1) * width + (j - 1)];
     verticalDiff += 2 * (Dev_Input_Image[(i+1) * width + (j)] - Dev_Input_Image[(i - 1) * width + (j)]);
 
-    Dev_Output_Image[(i - 1) * width + (j - 1)] = sqrt((float)(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff))/4;
+    Dev_Output_Image[(i - 1) * width + (j - 1)] = sqrt((float)(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff));
 }
