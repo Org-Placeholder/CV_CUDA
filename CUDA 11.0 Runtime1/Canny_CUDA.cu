@@ -30,9 +30,9 @@ unsigned char* Canny_CUDA(unsigned char* Input_Image, int Height, int Width) {
 
     cudaError_t cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
     if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize: %s\n", cudaGetErrorName(cudaerror));
-    /*
-    int max_iter = 1000;
-
+    
+    int max_iter = 250;
+    
     while (max_iter != 0)
     {
         dim3 Grid_Image(Height, Width);
@@ -44,7 +44,7 @@ unsigned char* Canny_CUDA(unsigned char* Input_Image, int Height, int Width) {
         if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize: %s\n", cudaGetErrorName(cudaerror));
 
         max_iter--;
-    }*/
+    }
     unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * Height * Width);
     //copy processed data back to cpu from gpu
     cudaMemcpy(Input_Image, Dev_Output_Image, Height * Width * sizeof(unsigned char), cudaMemcpyDeviceToHost);
@@ -111,19 +111,15 @@ __global__ void Canny_CUDA_kernel(unsigned char* Dev_Input_Image, unsigned char*
             Dev_Output_Image[i * width + j] = x;
         else
             Dev_Output_Image[i * width + j] = 0;
-    double max_threshold = 0.1 * 255;
-    double min_threshold = 0.1 * 255;
-    if (Dev_Output_Image[i * width + j] > min_threshold)
-    {
-        Dev_Output_Image[i * width + j] = 255;
-    }
-    /*
+    double max_threshold = 0.6 * 255;
+    double min_threshold = 0.3 * 255;
+    
     int max_thres = max_threshold;
     int min_thres = min_threshold;
             if (Dev_Output_Image[i * width + j] > max_thres)
                 Dev_Output_Image[i * width + j] = 255;
             else if(Dev_Output_Image[i * width + j] < min_thres)
-                Dev_Output_Image[i * width + j] = 0;*/
+                Dev_Output_Image[i * width + j] = 0;
 }
 
 __global__ void Edge_Tracking_CUDA_kernel(unsigned char* Dev_Input_Image)
@@ -134,11 +130,6 @@ __global__ void Edge_Tracking_CUDA_kernel(unsigned char* Dev_Input_Image)
 
     int height = gridDim.x;
     int width = gridDim.y;
-    /*
-    if (Dev_Input_Image[i * width + j] == 255 || Dev_Input_Image[i * width + j] == 0)
-    {
-        return;
-    }*/
     if (Dev_Input_Image[i * width + j] == 255)
     {
         for (int k = -2; k <= 2; k++)
@@ -151,7 +142,6 @@ __global__ void Edge_Tracking_CUDA_kernel(unsigned char* Dev_Input_Image)
                 {
                     if (Dev_Input_Image[x * width + y] != 0 && Dev_Input_Image[x * width + y] != 255)
                     {
-                        //printf("%d %d \n", x, y);
                         Dev_Input_Image[x * width + y] = 255;
                         return;
                     }
