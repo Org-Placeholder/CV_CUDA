@@ -11,6 +11,7 @@
 #include "Mean_Blur_Seperated.h"
 #include "Canny_CUDA.h"
 #include "sharpen_CUDA.h"
+#include "bokeh_blur.h"
 
 using namespace std;
 using namespace cv;
@@ -33,6 +34,7 @@ int main()
 	printf("10 for Sharpening on a photo\n");
 	printf("11 for Canny on a photo\n");
 	printf("12 for Mean Blur on a photo\n");
+	printf("13 for Bokeh Blur on a photo\n");
 
 	int x;
 	cin >> x;
@@ -68,7 +70,7 @@ void video_related(int task)
 	{
 		Mat frame;
 		bool bSuccess = cap.read(frame); // read a new frame from video
-
+		//cout << frame.rows << " " << frame.cols << endl;
 		//Breaking the while loop at the end of the video
 		if (bSuccess == false)
 		{
@@ -128,11 +130,20 @@ void video_related(int task)
 			imshow("Gaussian Blur", display);
 			break;
 		case 5:
-			Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
-			Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
-			Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+			//Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
+			//Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+			//Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+			//merge(channels, display);
+			//imshow("Reduced Noise", display);
+			//break;
+			Mat image = Mat::zeros(600, 600, CV_8UC3);
+			circle(image, Point(300, 300), 60, Scalar(255, 255, 255), 60);
+			imshow("image", image);
+			Bokeh_Blur_CUDA(channels[0].data , channels[0].rows, channels[0].cols , image.data );
+			Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols , image.data);
+			Bokeh_Blur_CUDA(channels[2].data,channels[2].rows, channels[2].cols , image.data);
 			merge(channels, display);
-			imshow("Reduced Noise", display);
+			imshow("Mean Blurred", display);
 			break;
 		}
 		
@@ -223,6 +234,13 @@ void photo_related(int task)
 		merge(channels, display);
 		imshow("Mean Blurred", display);
 		break;
+	//case 13:
+		/*Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols , ima);
+		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+		Bokeh_Blur_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+		merge(channels, display);
+		imshow("Mean Blurred", display);
+		break;*/
 	}
 
 	int k = waitKey(0); // Wait for a keystroke in the window
