@@ -34,7 +34,7 @@ unsigned char* Sharpen_CUDA(unsigned char* Input_Image, int Height, int Width) {
     if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize: %s\n", cudaGetErrorName(cudaerror));
 
 
-    //free gpu mempry
+    //free gpu memory
     cudaFree(Dev_Input_Image);
     cudaFree(Dev_Output_Image);
 

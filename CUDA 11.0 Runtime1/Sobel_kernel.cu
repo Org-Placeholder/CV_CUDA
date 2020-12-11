@@ -24,7 +24,7 @@ unsigned char* Sobel_CUDA(unsigned char* Input_Image, int Height, int Width) {
     dim3 Block_size(1, 1);
 
     size_t shm_size = 4 * sizeof(unsigned long long);
-	Sobel_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image);
+	Sobel_CUDA_Kernel <<<Grid_Image, Block_size, shm_size >>> (Dev_Input_Image, Dev_Output_Image);
 
     unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * Height * Width);
 	//copy processed data back to cpu from gpu

@@ -1,3 +1,2 @@
 ﻿  Driver.cpp
-     Creating library D:\GitHub\CV_CUDA\CUDA 11.0 Runtime1\x64\Debug\CUDA 11.0 Runtime1.lib and object D:\GitHub\CV_CUDA\CUDA 11.0 Runtime1\x64\Debug\CUDA 11.0 Runtime1.exp
-  CUDA 11.0 Runtime1.vcxproj -> D:\GitHub\CV_CUDA\CUDA 11.0 Runtime1\x64\Debug\CUDA 11.0 Runtime1.exe
+C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Bokeh_Blur.h(4,40): error C2059: syntax error: '<parameter-list>'

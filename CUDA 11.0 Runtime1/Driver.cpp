@@ -11,6 +11,7 @@
 #include "Mean_Blur_Seperated.h"
 #include "Canny_CUDA.h"
 #include "sharpen_CUDA.h"
+#include "Bokeh_Blur.h"
 
 using namespace std;
 using namespace cv;
@@ -222,6 +223,17 @@ void photo_related(int task)
 		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
 		imshow("Mean Blurred", display);
+		break;
+	case 13:
+		Mat image = Mat::zeros(300, 600, CV_8UC3);
+		circle(image, Point(1, 1), 100, Scalar(255, 255, 255), 1);
+		imshow("image", image);
+
+
+		bokeh_blur(channels[0].data, channels[0].rows, channels[0].cols);
+		bokeh_blur(channels[1].data, channels[1].rows, channels[1].cols);
+		bokeh_blur(channels[2].data, channels[2].rows, channels[2].cols);
+		merge(channels, display);
 		break;
 	}
 

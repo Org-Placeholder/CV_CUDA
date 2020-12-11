@@ -58,6 +58,7 @@ __global__ void Gaussian_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsign
             int x = i + k;
             int y = j + l;
             int z = abs(l) + abs(k);
+            printf(l + "Hello" + k);
             if (x >= 0 && y >= 0 && x < height && y < width)
             {
                 if (z == 1)
@@ -95,4 +96,3 @@ __global__ void Gaussian_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsign
 
     Dev_Output_Image[(i * width) + j] = val;
 }
-
