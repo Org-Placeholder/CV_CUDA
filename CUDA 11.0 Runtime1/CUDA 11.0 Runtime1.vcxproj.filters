@@ -28,6 +28,9 @@
     <Filter Include="Canny">
       <UniqueIdentifier>{f274c948-d95a-4af0-91cf-8f34535ecac1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bokeh_Blur">
+      <UniqueIdentifier>{a19e2581-df51-47d9-913d-f131d0b4f1c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Sobel_kernel.cu">
@@ -53,6 +56,9 @@
     </CudaCompile>
     <CudaCompile Include="Canny_CUDA.cu">
       <Filter>Canny</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bokeh_blur.cu">
+      <Filter>Bokeh_Blur</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="Canny_CUDA.h">
       <Filter>Canny</Filter>
+    </ClInclude>
+    <ClInclude Include="bokeh_blur.h">
+      <Filter>Bokeh_Blur</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

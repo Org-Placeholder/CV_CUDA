@@ -11,6 +11,7 @@
 #include "Mean_Blur_Seperated.h"
 #include "Canny_CUDA.h"
 #include "sharpen_CUDA.h"
+#include "bokeh_blur.h"
 
 using namespace std;
 using namespace cv;
@@ -33,6 +34,7 @@ int main()
 	printf("10 for Sharpening on a photo\n");
 	printf("11 for Canny on a photo\n");
 	printf("12 for Mean Blur on a photo\n");
+	printf("13 for Bokeh Blur on a photo\n");
 
 	int x;
 	cin >> x;
@@ -68,7 +70,7 @@ void video_related(int task)
 	{
 		Mat frame;
 		bool bSuccess = cap.read(frame); // read a new frame from video
-
+		//cout << frame.rows << " " << frame.cols << endl;
 		//Breaking the while loop at the end of the video
 		if (bSuccess == false)
 		{
@@ -128,11 +130,20 @@ void video_related(int task)
 			imshow("Gaussian Blur", display);
 			break;
 		case 5:
-			Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
-			Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
-			Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+			//Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
+			//Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+			//Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+			//merge(channels, display);
+			//imshow("Reduced Noise", display);
+			//break;
+			Mat image = Mat::zeros(30, 30, CV_8UC1);
+			circle(image, Point(7, 7), 7, Scalar(255, 255, 255), -1);
+			imshow("image", image);
+			Bokeh_Blur_CUDA(channels[0].data , channels[0].rows, channels[0].cols , image.data, image.rows, image.cols);
+			Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols , image.data, image.rows, image.cols);
+			Bokeh_Blur_CUDA(channels[2].data,channels[2].rows, channels[2].cols , image.data, image.rows, image.cols);
 			merge(channels, display);
-			imshow("Reduced Noise", display);
+			imshow("Mean Blurred", display);
 			break;
 		}
 		
@@ -171,7 +182,6 @@ void photo_related(int task)
 	imshow("Original image", img);
 
 	Mat display;
-
 	switch (task)
 	{
 	case 6:
@@ -222,6 +232,17 @@ void photo_related(int task)
 		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
 		imshow("Mean Blurred", display);
+
+		break;
+	case 13:
+		Mat image = Mat::zeros(50, 50, CV_8UC1);
+		circle(image, Point(25 ,25 ), 25, Scalar(255, 255, 255), -1);
+		imshow("image", image);
+		Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols, image.data, image.rows, image.cols);
+		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols, image.data, image.rows, image.cols);
+		Bokeh_Blur_CUDA(channels[2].data, channels[2].rows, channels[2].cols, image.data, image.rows, image.cols);
+		merge(channels, display);
+		imshow("Bokeh Blurred", display);
 		break;
 	}
 
