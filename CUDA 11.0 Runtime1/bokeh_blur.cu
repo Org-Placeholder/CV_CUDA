@@ -29,10 +29,10 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     unsigned char* image = NULL;
     //allocate the memory in gpu
     cudaMalloc((void**)&Dev_Input_Image, Height * Width * sizeof(unsigned char));
-    cudaMalloc((void**)&image, Height * Width * sizeof(unsigned char));
+    cudaMalloc((void**)&image, h * w * sizeof(unsigned char));
     //copy image to gpu
     cudaMemcpy(Dev_Input_Image, Input_Image, Height * Width * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(image, Image, Height * Width * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(image, Image, h * w * sizeof(unsigned char), cudaMemcpyHostToDevice);
     //allocating space for output image
     unsigned char* Dev_Output_Image = NULL;
     cudaMalloc((void**)&Dev_Output_Image, Height * Width * sizeof(unsigned char));

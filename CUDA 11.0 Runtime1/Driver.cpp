@@ -235,8 +235,8 @@ void photo_related(int task)
 
 		break;
 	case 13:
-		Mat image = Mat::zeros(15, 15, CV_8UC1);
-		circle(image, Point(7, 7), 7, Scalar(255, 255, 255), -1);
+		Mat image = Mat::zeros(50, 50, CV_8UC1);
+		circle(image, Point(25 ,25 ), 25, Scalar(255, 255, 255), -1);
 		imshow("image", image);
 		Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols, image.data, image.rows, image.cols);
 		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols, image.data, image.rows, image.cols);
