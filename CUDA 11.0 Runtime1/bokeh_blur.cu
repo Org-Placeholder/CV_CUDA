@@ -40,7 +40,7 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     //specifying grid and block size.
     //since there doesnt need to be any inter-thread communication, we keep block size (1,1)
     dim3 Grid_Image(Height, Width);
-    dim3 Block_size(1, 1);
+    dim3 Block_size(h, w);
 
     size_t shm_size = 4 * sizeof(unsigned long long);
     //Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image);
@@ -72,7 +72,7 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned 
     float val = 0;
     float total = 0;
 
-    for (int k = 0; k < h; k++)
+    /*for (int k = 0; k < h; k++)
     {
         for (int l = 0; l < w; l++)
         {
@@ -84,9 +84,21 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned 
                     total += image[k * h + l];
             }
         }
+    } */
+    int k = threadIdx.x;
+    int l = threadIdx.y;
+    int x = i + k;
+    int y = j + l;
+    if (x >= 0 && y >= 0 && x < height && y < width)
+    {
+        val += Dev_Input_Image[x * width + y] * image[k * h + l];
+        //total += image[k * h + l];
+        
     }
-    val/=total;
+    val/=804;
 
-    Dev_Output_Image[(i * width) + j] = val;
+    Dev_Output_Image[(i * width) + j] += val;
+    __threadfence();
+
 }
 
