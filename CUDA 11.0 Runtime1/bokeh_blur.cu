@@ -22,7 +22,8 @@
 using namespace cv;
 using namespace std;
 
-__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image,  int h,  int w);
+__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* Dev_Output_Image_2 , unsigned char* image,  int h,  int w);
+__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2);
 unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Width , unsigned char* Image, int h, int w) {
 
     unsigned char* Dev_Input_Image = NULL;
@@ -36,6 +37,9 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     //allocating space for output image
     unsigned char* Dev_Output_Image = NULL;
     cudaMalloc((void**)&Dev_Output_Image, Height * Width * sizeof(unsigned char));
+    
+    float* Dev_Output_Image_2 = NULL;
+    cudaMalloc((void**)&Dev_Output_Image_2, Height * Width * sizeof(float));
 
     //specifying grid and block size.
     //since there doesnt need to be any inter-thread communication, we keep block size (1,1)
@@ -44,7 +48,8 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
 
     size_t shm_size = 4 * sizeof(unsigned long long);
     //Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image);
-    Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image , image, h, w);
+    Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image_2 , image, h, w);
+    Bokeh_Blur_Cast_Kernel<< <Grid_Image , (1,1) , shm_size >> > (Dev_Output_Image, Dev_Output_Image_2);
 
     unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * Height * Width);
     //copy processed data back to cpu from gpu
@@ -52,8 +57,6 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
 
     cudaError_t cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
     if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize: %s\n", cudaGetErrorName(cudaerror));
-
-
     //free gpu mempry
     cudaFree(Dev_Input_Image);
     cudaFree(Dev_Output_Image);
@@ -62,7 +65,7 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     return result;
 }
 
-__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image,  int h,  int w)
+__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* Dev_Output_Image_2 , unsigned char* image,  int h,  int w)
 {
     int i = blockIdx.x;
     int j = blockIdx.y;
@@ -96,9 +99,21 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned 
         
     }
     val/=804;
-
-    Dev_Output_Image[(i * width) + j] += val;
+    
+    Dev_Output_Image_2[(i * width) + j] += val;
     __threadfence();
 
 }
+__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2)
+{
+    int i = blockIdx.x;
+    int j = blockIdx.y;
+    int width = gridDim.y;
+
+    
+
+    Dev_Output_Image[(i * width) + j] = Dev_Output_Image_2[(i * width) + j];
+
+}
+
 

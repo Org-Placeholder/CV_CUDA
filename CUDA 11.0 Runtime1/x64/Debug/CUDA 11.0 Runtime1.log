@@ -9,7 +9,9 @@ C:\opencv\build\include\opencv2/stitching/detail/blenders.hpp(100): warning : ov
   
 C:\opencv\build\include\opencv2/stitching/detail/blenders.hpp(127): warning : overloaded virtual function "cv::detail::Blender::prepare" is only partially overridden in class "cv::detail::MultiBandBlender"
   
-C:/Users/DevanshuChaudhari/source/repos/CV_CUDA/CUDA 11.0 Runtime1/bokeh_blur.cu(73): warning : variable "total" was declared but never referenced
+C:/Users/DevanshuChaudhari/source/repos/CV_CUDA/CUDA 11.0 Runtime1/bokeh_blur.cu(52): warning : expression has no effect
+  
+C:/Users/DevanshuChaudhari/source/repos/CV_CUDA/CUDA 11.0 Runtime1/bokeh_blur.cu(76): warning : variable "total" was declared but never referenced
   
 C:\opencv\build\include\opencv2/stitching/detail/warpers.hpp(213): warning : overloaded virtual function "cv::detail::PlaneWarper::buildMaps" is only partially overridden in class "cv::detail::AffineWarper"
   
@@ -19,5 +21,8 @@ C:\opencv\build\include\opencv2/stitching/detail/blenders.hpp(100): warning : ov
   
 C:\opencv\build\include\opencv2/stitching/detail/blenders.hpp(127): warning : overloaded virtual function "cv::detail::Blender::prepare" is only partially overridden in class "cv::detail::MultiBandBlender"
   
+C:/Users/DevanshuChaudhari/source/repos/CV_CUDA/CUDA 11.0 Runtime1/bokeh_blur.cu(52): warning : expression has no effect
+  
   bokeh_blur.cu
+     Creating library C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.lib and object C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exp
   CUDA 11.0 Runtime1.vcxproj -> C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exe
