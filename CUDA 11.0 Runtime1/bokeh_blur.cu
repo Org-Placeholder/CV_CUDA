@@ -22,18 +22,17 @@
 using namespace cv;
 using namespace std;
 
-__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image);
-unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Width , unsigned char* Image) {
+__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image,  int h,  int w);
+unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Width , unsigned char* Image, int h, int w) {
 
     unsigned char* Dev_Input_Image = NULL;
     unsigned char* image = NULL;
     //allocate the memory in gpu
     cudaMalloc((void**)&Dev_Input_Image, Height * Width * sizeof(unsigned char));
-    cudaMalloc((void**)& Image, Height * Width * sizeof(unsigned char));
+    cudaMalloc((void**)&image, Height * Width * sizeof(unsigned char));
     //copy image to gpu
     cudaMemcpy(Dev_Input_Image, Input_Image, Height * Width * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(image, Image, Height * Width * sizeof(unsigned char), cudaMemcpyHostToDevice);
-
     //allocating space for output image
     unsigned char* Dev_Output_Image = NULL;
     cudaMalloc((void**)&Dev_Output_Image, Height * Width * sizeof(unsigned char));
@@ -45,7 +44,7 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
 
     size_t shm_size = 4 * sizeof(unsigned long long);
     //Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image);
-    Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image , image);
+    Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image , image, h, w);
 
     unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * Height * Width);
     //copy processed data back to cpu from gpu
@@ -63,7 +62,7 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     return result;
 }
 
-__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image)
+__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image,  int h,  int w)
 {
     int i = blockIdx.x;
     int j = blockIdx.y;
@@ -71,11 +70,23 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned 
     int height = gridDim.x;
     int width = gridDim.y;
     float val = 0;
-    for (int k = 2; k < 600; k++)
-    {
-        val = Dev_Input_Image[k - 1] * image[k - 1];
-    }
-    //Dev_Output_Image[(i * width) + j] = val;
+    float total = 0;
 
+    for (int k = 0; k < h; k++)
+    {
+        for (int l = 0; l < w; l++)
+        {
+            int x = i + k;
+            int y = j + l;
+            if (x >= 0 && y >= 0 && x < height && y < width)
+            {
+                    val += Dev_Input_Image[x * width + y] * image[k * h + l];
+                    total += image[k * h + l];
+            }
+        }
+    }
+    val/=total;
+
+    Dev_Output_Image[(i * width) + j] = val;
 }
 

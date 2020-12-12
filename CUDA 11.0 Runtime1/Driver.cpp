@@ -136,12 +136,12 @@ void video_related(int task)
 			//merge(channels, display);
 			//imshow("Reduced Noise", display);
 			//break;
-			Mat image = Mat::zeros(600, 600, CV_8UC3);
-			circle(image, Point(300, 300), 60, Scalar(255, 255, 255), 60);
+			Mat image = Mat::zeros(30, 30, CV_8UC1);
+			circle(image, Point(7, 7), 7, Scalar(255, 255, 255), -1);
 			imshow("image", image);
-			Bokeh_Blur_CUDA(channels[0].data , channels[0].rows, channels[0].cols , image.data );
-			Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols , image.data);
-			Bokeh_Blur_CUDA(channels[2].data,channels[2].rows, channels[2].cols , image.data);
+			Bokeh_Blur_CUDA(channels[0].data , channels[0].rows, channels[0].cols , image.data, image.rows, image.cols);
+			Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols , image.data, image.rows, image.cols);
+			Bokeh_Blur_CUDA(channels[2].data,channels[2].rows, channels[2].cols , image.data, image.rows, image.cols);
 			merge(channels, display);
 			imshow("Mean Blurred", display);
 			break;
@@ -182,7 +182,6 @@ void photo_related(int task)
 	imshow("Original image", img);
 
 	Mat display;
-
 	switch (task)
 	{
 	case 6:
@@ -233,14 +232,18 @@ void photo_related(int task)
 		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
 		imshow("Mean Blurred", display);
+
 		break;
-	//case 13:
-		/*Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols , ima);
-		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
-		Bokeh_Blur_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
+	case 13:
+		Mat image = Mat::zeros(15, 15, CV_8UC1);
+		circle(image, Point(7, 7), 7, Scalar(255, 255, 255), -1);
+		imshow("image", image);
+		Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols, image.data, image.rows, image.cols);
+		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols, image.data, image.rows, image.cols);
+		Bokeh_Blur_CUDA(channels[2].data, channels[2].rows, channels[2].cols, image.data, image.rows, image.cols);
 		merge(channels, display);
-		imshow("Mean Blurred", display);
-		break;*/
+		imshow("Bokeh Blurred", display);
+		break;
 	}
 
 	int k = waitKey(0); // Wait for a keystroke in the window
