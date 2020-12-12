@@ -44,7 +44,7 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     //specifying grid and block size.
     //since there doesnt need to be any inter-thread communication, we keep block size (1,1)
     dim3 Grid_Image(Height, Width);
-    dim3 Block_size(h, w);
+    dim3 Block_size(h/4, w/4);
 
     size_t shm_size = 4 * sizeof(unsigned long long);
     //Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image);
@@ -88,20 +88,33 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* De
             }
         }
     } */
-    int k = threadIdx.x;
-    int l = threadIdx.y;
-    int x = i + k;
-    int y = j + l;
-    if (x >= 0 && y >= 0 && x < height && y < width)
+    int k_start = threadIdx.x;
+    int l_start = threadIdx.y;
+    k_start *= 4;
+    l_start *= 4;
+    for (int p = 0; p < 4; p++)
     {
-        val += Dev_Input_Image[x * width + y] * image[k * h + l];
-        //total += image[k * h + l];
-        
+        for (int q = 0; q < 4; q++)
+        {
+            int k = k_start + p;
+            int l = l_start + q;
+            int x = i + k;
+            int y = j + l;
+            if (x >= 0 && y >= 0 && x < height && y < width)
+            {
+                if (Dev_Input_Image[x * width + y] > 50)
+                {
+                    val += Dev_Input_Image[x * width + y] * image[k * h + l];
+                    //total += image[k * h + l];
+                }
+            }
+        }
     }
+
     val/=804;
     
     Dev_Output_Image_2[(i * width) + j] += val;
-    __threadfence();
+    //__threadfence();
 
 }
 __global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2)
@@ -110,8 +123,15 @@ __global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* D
     int j = blockIdx.y;
     int width = gridDim.y;
 
-    
-
+    if (Dev_Output_Image_2[(i * width) + j] > 255)
+    {
+        Dev_Output_Image_2[(i * width) + j] = 255;
+    }
+    if (Dev_Output_Image_2[(i * width) + j] < 0)
+    {
+        Dev_Output_Image_2[(i * width) + j] = 0;
+    }
+    Dev_Output_Image_2[(i * width) + j] /= 2;
     Dev_Output_Image[(i * width) + j] = Dev_Output_Image_2[(i * width) + j];
 
 }

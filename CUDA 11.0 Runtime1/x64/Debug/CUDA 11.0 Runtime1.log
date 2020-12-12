@@ -24,5 +24,5 @@ C:\opencv\build\include\opencv2/stitching/detail/blenders.hpp(127): warning : ov
 C:/Users/DevanshuChaudhari/source/repos/CV_CUDA/CUDA 11.0 Runtime1/bokeh_blur.cu(52): warning : expression has no effect
   
   bokeh_blur.cu
-     Creating library C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.lib and object C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exp
+  Driver.cpp
   CUDA 11.0 Runtime1.vcxproj -> C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exe
