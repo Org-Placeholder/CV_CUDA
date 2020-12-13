@@ -162,7 +162,7 @@ void photo_related(int task)
 	printf("Enter image path : ");
 
 	//String image_path;
-	String image_path = "images/input_image_1.jpg";
+	String image_path = "images/M35.jpg";
 	//cin >> image_path;
 
 	Mat img = imread(image_path, IMREAD_COLOR);
@@ -235,8 +235,8 @@ void photo_related(int task)
 
 		break;
 	case 13:
-		Mat image = Mat::zeros(32, 32, CV_8UC1);
-		circle(image, Point(16 ,16 ), 16, Scalar(255, 255, 255), -1);
+		Mat image = Mat::zeros(52, 52, CV_8UC1);
+		circle(image, Point(26 ,26 ), 26, Scalar(255, 255, 255), -1);
 		imshow("image", image);
 		Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols, image.data, image.rows, image.cols);
 		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols, image.data, image.rows, image.cols);
