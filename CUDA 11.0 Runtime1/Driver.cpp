@@ -259,12 +259,17 @@ void photo_related(int task)
 			circle(image, Point(radius, radius), radius, Scalar(255, 255, 255), -1);
 			break;
 		case 2 :
-			image = imread("masks/ring.jpg", IMREAD_COLOR);
-			resize(image, image, Size(32, 32));
+			radius;
+			printf("Enter circle radius (even number preferred) : ");
+			cin >> radius;
+			image = Mat::zeros(radius * 2, radius * 2, CV_8UC1);
+			circle(image, Point(radius, radius), radius, Scalar(255, 255, 255), -1);
+			circle(image, Point(radius, radius), radius / 2, Scalar(0, 0, 0), -1);
+			imshow("mask", image);
 			break;
 		case 3:
 			image = imread("masks/hexagon.jpg", IMREAD_COLOR);
-			resize(image, image, Size(32, 32));
+			resize(image, image, Size(64, 64));
 			break;
 		}
 		imshow("Original image", img);
