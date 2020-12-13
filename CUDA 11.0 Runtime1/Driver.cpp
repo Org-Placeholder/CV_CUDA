@@ -162,7 +162,7 @@ void photo_related(int task)
 	printf("Enter image path : ");
 
 	//String image_path;
-	String image_path = "images/M35.jpg";
+	String image_path = "images/bokeh_input_1.jpg";
 	//cin >> image_path;
 
 	Mat img = imread(image_path, IMREAD_COLOR);
@@ -179,16 +179,18 @@ void photo_related(int task)
 	Mat gray;
 	cvtColor(img, gray, COLOR_BGR2GRAY);
 
-	imshow("Original image", img);
+	
 
 	Mat display;
 	switch (task)
 	{
 	case 6:
+		imshow("Original image", img);
 		Sobel_CUDA(gray.data, gray.rows, gray.cols);
 		imshow("Sobel Output", gray);
 		break;
 	case 7:
+		imshow("Original image", img);
 		Salt_Pepper(channels[0].data, channels[0].rows, channels[0].cols);
 		Salt_Pepper(channels[1].data, channels[1].rows, channels[1].cols);
 		Salt_Pepper(channels[2].data, channels[2].rows, channels[2].cols);
@@ -196,6 +198,7 @@ void photo_related(int task)
 		imshow("Added Noise", display);
 		break;
 	case 8:
+		imshow("Original image", img);
 		Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
 		Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
 		Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
@@ -206,6 +209,7 @@ void photo_related(int task)
 		imshow("Reduced Noise", display);
 		break;
 	case 9:
+		imshow("Original image", img);
 		Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
 		Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
 		Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
@@ -213,6 +217,7 @@ void photo_related(int task)
 		imshow("Gaussian Blur", display);
 		break;
 	case 10:
+		imshow("Original image", img);
 		Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
 		Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
 		Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
@@ -220,6 +225,7 @@ void photo_related(int task)
 		imshow("Reduced Noise", display);
 		break;
 	case 11:
+		imshow("Original image", img);
 		Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
 		Sharpen_CUDA(gray.data, gray.rows, gray.cols);
 		Sobel_CUDA(gray.data, gray.rows, gray.cols);
@@ -227,6 +233,7 @@ void photo_related(int task)
 		imshow("Canny Output", gray);
 		break;
 	case 12:
+		imshow("Original image", img);
 		Mean_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
 		Mean_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
 		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
@@ -235,9 +242,32 @@ void photo_related(int task)
 
 		break;
 	case 13:
-		Mat image = Mat::zeros(52, 52, CV_8UC1);
-		circle(image, Point(26 ,26 ), 26, Scalar(255, 255, 255), -1);
-		imshow("image", image);
+		printf("Select mask shape\n");
+		printf("Press 1 for circle \n");
+		printf("Press 2 for ring \n");
+		printf("Press 3 for hexagon \n");
+		Mat image;
+		int mask;
+		cin >> mask;
+		switch (mask)
+		{
+		case 1 :
+			int radius;
+			printf("Enter circle radius (even number preferred) : ");
+			cin >> radius;
+			image = Mat::zeros(radius*2, radius * 2, CV_8UC1);
+			circle(image, Point(radius, radius), radius, Scalar(255, 255, 255), -1);
+			break;
+		case 2 :
+			image = imread("masks/ring.jpg", IMREAD_COLOR);
+			resize(image, image, Size(32, 32));
+			break;
+		case 3:
+			image = imread("masks/hexagon.jpg", IMREAD_COLOR);
+			resize(image, image, Size(32, 32));
+			break;
+		}
+		imshow("Original image", img);
 		Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols, image.data, image.rows, image.cols);
 		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols, image.data, image.rows, image.cols);
 		Bokeh_Blur_CUDA(channels[2].data, channels[2].rows, channels[2].cols, image.data, image.rows, image.cols);

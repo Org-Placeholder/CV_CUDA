@@ -23,7 +23,7 @@ using namespace cv;
 using namespace std;
 
 __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* Dev_Output_Image_2 , unsigned char* image,  int h,  int w);
-__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2);
+__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2, int h);
 unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Width , unsigned char* Image, int h, int w) {
 
     unsigned char* Dev_Input_Image = NULL;
@@ -51,7 +51,7 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image_2 , image, h, w);
     cudaError_t cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
     if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize at kernel 1: %s\n", cudaGetErrorName(cudaerror));
-    Bokeh_Blur_Cast_Kernel<< <Grid_Image , (1,1) , shm_size >> > (Dev_Output_Image, Dev_Output_Image_2);
+    Bokeh_Blur_Cast_Kernel<< <Grid_Image , (1,1) , shm_size >> > (Dev_Output_Image, Dev_Output_Image_2, h);
     cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
     if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize at kernel 2: %s\n", cudaGetErrorName(cudaerror));
     unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * Height * Width);
@@ -105,12 +105,12 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* De
     //__threadfence();
 
 }
-__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2)
+__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2, int h)
 {
     int i = blockIdx.x;
     int j = blockIdx.y;
     int width = gridDim.y;
-    Dev_Output_Image_2[(i * width) + j] /= 3.14*8*8*255*10;
+    Dev_Output_Image_2[(i * width) + j] /= 3.14*h*255*h/4;
     if (Dev_Output_Image_2[(i * width) + j] > 255)
     {
         Dev_Output_Image_2[(i * width) + j] = 255;
