@@ -22,7 +22,8 @@
 using namespace cv;
 using namespace std;
 
-__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image,  int h,  int w);
+__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* Dev_Output_Image_2 , unsigned char* image,  int h,  int w);
+__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2, int h);
 unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Width , unsigned char* Image, int h, int w) {
 
     unsigned char* Dev_Input_Image = NULL;
@@ -36,24 +37,29 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     //allocating space for output image
     unsigned char* Dev_Output_Image = NULL;
     cudaMalloc((void**)&Dev_Output_Image, Height * Width * sizeof(unsigned char));
+    
+    float* Dev_Output_Image_2 = NULL;
+    cudaMalloc((void**)&Dev_Output_Image_2, Height * Width * sizeof(float));
 
     //specifying grid and block size.
     //since there doesnt need to be any inter-thread communication, we keep block size (1,1)
     dim3 Grid_Image(Height, Width);
-    dim3 Block_size(1, 1);
+    dim3 Block_size(h/4, w/4);
 
     size_t shm_size = 4 * sizeof(unsigned long long);
     //Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image);
-    Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image , image, h, w);
-
+    Bokeh_Blur_CUDA_Kernel << <Grid_Image, Block_size, shm_size >> > (Dev_Input_Image, Dev_Output_Image_2 , image, h, w);
+    cudaError_t cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
+    if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize at kernel 1: %s\n", cudaGetErrorName(cudaerror));
+    Bokeh_Blur_Cast_Kernel<< <Grid_Image , (1,1) , shm_size >> > (Dev_Output_Image, Dev_Output_Image_2, h);
+    cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
+    if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize at kernel 2: %s\n", cudaGetErrorName(cudaerror));
     unsigned char* result = (unsigned char*)malloc(sizeof(unsigned char*) * Height * Width);
     //copy processed data back to cpu from gpu
     cudaMemcpy(Input_Image, Dev_Output_Image, Height * Width * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 
-    cudaError_t cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
+    cudaerror = cudaDeviceSynchronize(); // waits for completion, returns error code
     if (cudaerror != cudaSuccess) fprintf(stderr, "Cuda failed to synchronize: %s\n", cudaGetErrorName(cudaerror));
-
-
     //free gpu mempry
     cudaFree(Dev_Input_Image);
     cudaFree(Dev_Output_Image);
@@ -62,7 +68,7 @@ unsigned char* Bokeh_Blur_CUDA(unsigned char* Input_Image , int Height, int Widt
     return result;
 }
 
-__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned char* Dev_Output_Image , unsigned char* image,  int h,  int w)
+__global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* Dev_Output_Image_2 , unsigned char* image,  int h,  int w)
 {
     int i = blockIdx.x;
     int j = blockIdx.y;
@@ -71,22 +77,51 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, unsigned 
     int width = gridDim.y;
     float val = 0;
     float total = 0;
-
-    for (int k = 0; k < h; k++)
+    int k_start = threadIdx.x;
+    int l_start = threadIdx.y;
+    k_start *= 4;
+    l_start *= 4;
+    for (int p = 0; p < 4; p++)
     {
-        for (int l = 0; l < w; l++)
+        for (int q = 0; q < 4; q++)
         {
+            int k = k_start + p;
+            int l = l_start + q;
             int x = i + k;
             int y = j + l;
             if (x >= 0 && y >= 0 && x < height && y < width)
             {
                     val += Dev_Input_Image[x * width + y] * image[k * h + l];
                     total += image[k * h + l];
+             
             }
         }
     }
-    val/=total;
 
-    Dev_Output_Image[(i * width) + j] = val;
+    //val *= 30;
+    //printf("val = %f, total = %f", val, total);
+    atomicAdd(&Dev_Output_Image_2[(i * width) + j], val);
+    //Dev_Output_Image_2[(i * width) + j] += val;
+    //__threadfence();
+
 }
+__global__ void Bokeh_Blur_Cast_Kernel(unsigned char* Dev_Output_Image, float* Dev_Output_Image_2, int h)
+{
+    int i = blockIdx.x;
+    int j = blockIdx.y;
+    int width = gridDim.y;
+    Dev_Output_Image_2[(i * width) + j] /= 3.14*h*255*h/4;
+    if (Dev_Output_Image_2[(i * width) + j] > 255)
+    {
+        Dev_Output_Image_2[(i * width) + j] = 255;
+    }
+    if (Dev_Output_Image_2[(i * width) + j] < 0)
+    {
+        Dev_Output_Image_2[(i * width) + j] = 0;
+    }
+    
+    Dev_Output_Image[(i * width) + j] = Dev_Output_Image_2[(i * width) + j];
+
+}
+
 
