@@ -162,7 +162,7 @@ void photo_related(int task)
 	printf("Enter image path : ");
 
 	//String image_path;
-	String image_path = "C:\\Users\\DevanshuChaudhari\\Desktop\\convolve\\christmas.jpg";
+	String image_path = "images/input_image_1.jpg";
 	//cin >> image_path;
 
 	Mat img = imread(image_path, IMREAD_COLOR);
