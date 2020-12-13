@@ -152,9 +152,13 @@ void photo_related(int task)
 {
 	printf("Enter image path : ");
 
-	//String image_path;
-	String image_path = "images/bokeh_input_1.jpg";
-	//cin >> image_path;
+	String image_path;
+	if (task == 13) {
+		image_path = "images/bokeh_input_1.jpg";
+	}
+	else {
+		cin >> image_path;
+	}
 
 	Mat img = imread(image_path, IMREAD_COLOR);
 	
