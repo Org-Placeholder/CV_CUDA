@@ -76,7 +76,7 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* De
     int height = gridDim.x;
     int width = gridDim.y;
     float val = 0;
-    float total = 0;
+    //float total = 0;
     int k_start = threadIdx.x;
     int l_start = threadIdx.y;
     k_start *= 4;
@@ -92,7 +92,7 @@ __global__ void Bokeh_Blur_CUDA_Kernel(unsigned char* Dev_Input_Image, float* De
             if (x >= 0 && y >= 0 && x < height && y < width)
             {
                     val += Dev_Input_Image[x * width + y] * image[k * h + l];
-                    total += image[k * h + l];
+                    //total += image[k * h + l];
              
             }
         }

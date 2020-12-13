@@ -130,20 +130,11 @@ void video_related(int task)
 			imshow("Gaussian Blur", display);
 			break;
 		case 5:
-			//Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
-			//Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
-			//Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
-			//merge(channels, display);
-			//imshow("Reduced Noise", display);
-			//break;
-			Mat image = Mat::zeros(30, 30, CV_8UC1);
-			circle(image, Point(7, 7), 7, Scalar(255, 255, 255), -1);
-			imshow("image", image);
-			Bokeh_Blur_CUDA(channels[0].data , channels[0].rows, channels[0].cols , image.data, image.rows, image.cols);
-			Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols , image.data, image.rows, image.cols);
-			Bokeh_Blur_CUDA(channels[2].data,channels[2].rows, channels[2].cols , image.data, image.rows, image.cols);
+			Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
+			Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
+			Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
 			merge(channels, display);
-			imshow("Mean Blurred", display);
+			imshow("Reduced Noise", display);
 			break;
 		}
 		
@@ -251,21 +242,45 @@ void photo_related(int task)
 		cin >> mask;
 		switch (mask)
 		{
-		case 1 :
+		case 1:
 			int radius;
 			printf("Enter circle radius (even number preferred) : ");
 			cin >> radius;
-			image = Mat::zeros(radius*2, radius * 2, CV_8UC1);
+			image = Mat::zeros(radius * 2, radius * 2, CV_8UC1);
 			circle(image, Point(radius, radius), radius, Scalar(255, 255, 255), -1);
 			break;
-		case 2 :
-			image = imread("masks/ring.jpg", IMREAD_COLOR);
-			resize(image, image, Size(32, 32));
+		case 2:
+			radius;
+			int t;
+			printf("Enter ring radius (even number preferred) : ");
+			cin >> radius;
+			printf("Enter thickness of ring : ");
+			cin >> t;
+			image = Mat::zeros(radius * 2.5, radius * 2.5, CV_8UC1);
+			circle(image, Point(radius * 1.25, radius * 1.25), radius, Scalar(255, 255, 255), t);
+			imshow("ring", image);
 			break;
 		case 3:
-			image = imread("masks/hexagon.jpg", IMREAD_COLOR);
-			resize(image, image, Size(32, 32));
-			break;
+			int w;
+			printf("Enter length of Hexagon : ");
+			cin >> w;
+			image = Mat::zeros(2*w, 2*w, CV_8UC1);
+			int lineType = LINE_8;
+			Point hex_points[1][6];
+			hex_points[0][0] = Point(0, w);
+			hex_points[0][1] = Point(w / 2, 0);
+			hex_points[0][2] = Point(3 * w / 2, 0);
+			hex_points[0][3] = Point(2 * w, w);
+			hex_points[0][4] = Point(3 * w / 2, 2 * w);
+			hex_points[0][5] = Point(w / 2, 2 * w);
+			const Point* ppt[1] = { hex_points[0] };
+			int npt[] = { 6 };
+			fillPoly(image,
+				ppt,
+				npt,
+				1,
+				Scalar(255, 255, 255),
+				lineType);
 		}
 		imshow("Original image", img);
 		Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols, image.data, image.rows, image.cols);
