@@ -54,8 +54,9 @@ __global__ void Gaussian_Blur_Vertical_kernel(unsigned char* Dev_Input_Image, un
 
     float val = 0;
     float count = 0;
-    float filter[7] = { 16.0, 13.5, 8.20, 3.56, 1.11, 0.25, 0.04 };
-    for (int k = -6; k <= 6; k++)
+   // float filter[7] = { 16.0, 13.5, 8.20, 3.56, 1.11, 0.25, 0.04 };
+   float filter[9] = { 22.9,59.77,60.598,24.1732,38.2928,24.1732,60.598,59.77 ,22.9 };
+    for (int k = -8; k <= 8; k++)
     {
         
         int y = j + k;
@@ -84,10 +85,11 @@ __global__ void Gaussian_Blur_Horizontal_kernel(unsigned char* Dev_Input_Image, 
 
     float val = 0;
     float count = 0;
-    float filter[7] = { 16.0, 13.5, 8.20, 3.56, 1.11, 0.25, 0.04 };
-    for (int k = -6; k <= 6; k++)
-    {
+    //float filter[7] = { 16.0, 13.5, 8.20, 3.56, 1.11, 0.25, 0.04 };
+    float filter[9] = { 22.9,59.77,60.598,24.1732,38.2928,24.1732,60.598,59.77 ,22.9 };
 
+    for (int k = -8; k <= 8; k++)
+    {
         int x = i + k;
         int z = abs(k);
         if (x >= 0 && x < height)
