@@ -1,15 +1,5 @@
-﻿  Driver.cpp
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(263,44): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(263,30): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(264,46): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(264,31): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-     Creating library C:\Users\shubh\Desktop\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.lib and object C:\Users\shubh\Desktop\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exp
-  CUDA 11.0 Runtime1.vcxproj -> C:\Users\shubh\Desktop\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exe
+﻿  Compiling CUDA source file Gaussian_Blur_Seperated.cu...
+  
+  C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\CUDA 11.0 Runtime1>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.28.29333\bin\HostX86\x64" -x cu   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Fdx64\Debug\vc142.pdb /FS /Zi /RTC1 /MDd " -o x64\Debug\Gaussian_Blur_Seperated.cu.obj "C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\CUDA 11.0 Runtime1\Gaussian_Blur_Seperated.cu" 
+  Gaussian_Blur_Seperated.cu
+  CUDA 11.0 Runtime1.vcxproj -> C:\Users\DevanshuChaudhari\source\repos\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exe
