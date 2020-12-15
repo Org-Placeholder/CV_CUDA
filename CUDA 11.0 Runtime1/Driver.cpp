@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include <chrono>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -15,6 +16,8 @@
 
 using namespace std;
 using namespace cv;
+using namespace std::chrono;
+
 
 void video_related(int task);
 void photo_related(int task);
@@ -150,13 +153,13 @@ void video_related(int task)
 
 void photo_related(int task)
 {
-	printf("Enter image path : ");
 
 	String image_path;
 	if (task == 13) {
-		image_path = "images/bokeh_input_1.jpg";
+		image_path = "images/input_image_1.jpg";
 	}
 	else {
+		printf("Enter image path : ");
 		cin >> image_path;
 	}
 
@@ -173,68 +176,104 @@ void photo_related(int task)
 
 	Mat gray;
 	cvtColor(img, gray, COLOR_BGR2GRAY);
-
 	
-
+	auto start = high_resolution_clock::now();
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<milliseconds>(stop - start);
 	Mat display;
 	switch (task)
 	{
 	case 6:
 		imshow("Original image", img);
+		start = high_resolution_clock::now();;
 		Sobel_CUDA(gray.data, gray.rows, gray.cols);
 		imshow("Sobel Output", gray);
+		stop = high_resolution_clock::now();
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
 		break;
 	case 7:
 		imshow("Original image", img);
+		start = high_resolution_clock::now();
 		Salt_Pepper(channels[0].data, channels[0].rows, channels[0].cols);
 		Salt_Pepper(channels[1].data, channels[1].rows, channels[1].cols);
 		Salt_Pepper(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
+		stop = high_resolution_clock::now();
 		imshow("Added Noise", display);
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
+		//imwrite("Added_Noise.jpg", display);
 		break;
 	case 8:
 		imshow("Original image", img);
-		Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
-		Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
-		Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
+		start = high_resolution_clock::now();
+		Mean_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
+		Mean_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
+		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
 		Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
 		Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
 		Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
+		stop = high_resolution_clock::now();
 		imshow("Reduced Noise", display);
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
 		break;
 	case 9:
 		imshow("Original image", img);
+		start = high_resolution_clock::now();;
 		Gaussian_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
 		Gaussian_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
 		Gaussian_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
+		stop = high_resolution_clock::now();
 		imshow("Gaussian Blur", display);
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
 		break;
 	case 10:
 		imshow("Original image", img);
+		start = high_resolution_clock::now();;
 		Sharpen_CUDA(channels[0].data, channels[0].rows, channels[0].cols);
 		Sharpen_CUDA(channels[1].data, channels[1].rows, channels[1].cols);
 		Sharpen_CUDA(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
+		stop = high_resolution_clock::now();
 		imshow("Reduced Noise", display);
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
 		break;
 	case 11:
 		imshow("Original image", img);
+		start = high_resolution_clock::now();;
 		Gaussian_Blur_CUDA(gray.data, gray.rows, gray.cols);
 		Sharpen_CUDA(gray.data, gray.rows, gray.cols);
 		Sobel_CUDA(gray.data, gray.rows, gray.cols);
 		Canny_CUDA(gray.data, gray.rows, gray.cols);
 		imshow("Canny Output", gray);
+		stop = high_resolution_clock::now();
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
 		break;
 	case 12:
 		imshow("Original image", img);
+		start = high_resolution_clock::now();;
 		Mean_Blur_Seperated(channels[0].data, channels[0].rows, channels[0].cols);
 		Mean_Blur_Seperated(channels[1].data, channels[1].rows, channels[1].cols);
 		Mean_Blur_Seperated(channels[2].data, channels[2].rows, channels[2].cols);
 		merge(channels, display);
+		stop = high_resolution_clock::now();
 		imshow("Mean Blurred", display);
-
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
 		break;
 	case 13:
 		printf("Select mask shape\n");
@@ -248,50 +287,72 @@ void photo_related(int task)
 		{
 		case 1:
 			int radius;
-			printf("Enter circle radius (even number preferred) : ");
+			printf("Enter circle radius (even number preferred and use a value less than 64) : ");
 			cin >> radius;
-			image = Mat::zeros(radius * 2, radius * 2, CV_8UC1);
-			circle(image, Point(radius, radius), radius, Scalar(255, 255, 255), -1);
+			if (radius > 64) {
+				printf("Error: Value entered greater than 64");
+			}
+			else {
+				image = Mat::zeros(radius * 2, radius * 2, CV_8UC1);
+				circle(image, Point(radius, radius), radius, Scalar(255, 255, 255), -1);
+			}
 			break;
 		case 2:
 			radius;
 			int t;
-			printf("Enter ring radius (even number preferred) : ");
+			printf("Enter ring radius (even number preferred also use a value less than 51) : ");
 			cin >> radius;
-			printf("Enter thickness of ring : ");
-			cin >> t;
-			image = Mat::zeros(radius * 2.5, radius * 2.5, CV_8UC1);
-			circle(image, Point(radius * 1.25, radius * 1.25), radius, Scalar(255, 255, 255), t);
-			imshow("ring", image);
+			if (radius > 51) {
+				printf("Error: Value entered greater than 51");
+			}
+			else {
+				int a = 0.25 * radius;
+				cout<<"Enter thickness of ring (preferred value around "<<  a  <<") : "<<endl;
+				cin >> t;
+				image = Mat::zeros(radius * 2.5, radius * 2.5, CV_8UC1);
+				circle(image, Point(radius * 1.25, radius * 1.25), radius, Scalar(255, 255, 255), t);
+				imshow("ring", image);
+			}
 			break;
 		case 3:
 			int w;
-			printf("Enter length of Hexagon : ");
+			printf("Enter length of Hexagon (use a value less than 64): ");
 			cin >> w;
-			image = Mat::zeros(2*w, 2*w, CV_8UC1);
-			int lineType = LINE_8;
-			Point hex_points[1][6];
-			hex_points[0][0] = Point(0, w);
-			hex_points[0][1] = Point(w / 2, 0);
-			hex_points[0][2] = Point(3 * w / 2, 0);
-			hex_points[0][3] = Point(2 * w, w);
-			hex_points[0][4] = Point(3 * w / 2, 2 * w);
-			hex_points[0][5] = Point(w / 2, 2 * w);
-			const Point* ppt[1] = { hex_points[0] };
-			int npt[] = { 6 };
-			fillPoly(image,
-				ppt,
-				npt,
-				1,
-				Scalar(255, 255, 255),
-				lineType);
+			if (w > 64) {
+				printf("Error: Value entered greater than 64");
+			}
+			else {
+				image = Mat::zeros(2 * w, 2 * w, CV_8UC1);
+				int lineType = LINE_8;
+				Point hex_points[1][6];
+				hex_points[0][0] = Point(0, w);
+				hex_points[0][1] = Point(w / 2, 0);
+				hex_points[0][2] = Point(3 * w / 2, 0);
+				hex_points[0][3] = Point(2 * w, w);
+				hex_points[0][4] = Point(3 * w / 2, 2 * w);
+				hex_points[0][5] = Point(w / 2, 2 * w);
+				const Point* ppt[1] = { hex_points[0] };
+				int npt[] = { 6 };
+				fillPoly(image,
+					ppt,
+					npt,
+					1,
+					Scalar(255, 255, 255),
+					lineType);
+			}
+			imshow("hex", image);
 		}
 		imshow("Original image", img);
+		start = high_resolution_clock::now();;
 		Bokeh_Blur_CUDA(channels[0].data, channels[0].rows, channels[0].cols, image.data, image.rows, image.cols);
 		Bokeh_Blur_CUDA(channels[1].data, channels[1].rows, channels[1].cols, image.data, image.rows, image.cols);
 		Bokeh_Blur_CUDA(channels[2].data, channels[2].rows, channels[2].cols, image.data, image.rows, image.cols);
 		merge(channels, display);
+		stop = high_resolution_clock::now();
 		imshow("Bokeh Blurred", display);
+		duration = duration_cast<milliseconds>(stop - start);
+		cout << "Time taken by function: "
+			<< duration.count() << " milliseconds" << endl;
 		break;
 	}
 

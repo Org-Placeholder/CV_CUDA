@@ -1,15 +1,15 @@
 ﻿  Driver.cpp
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(263,44): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(263,30): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(264,46): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(309,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(312,45): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(312,31): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(313,47): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
           with
           [
               _Tp=int
           ]
-C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(264,31): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+C:\Users\shubh\Desktop\CV_CUDA\CUDA 11.0 Runtime1\Driver.cpp(313,32): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
           with
           [
               _Tp=int
           ]
-     Creating library C:\Users\shubh\Desktop\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.lib and object C:\Users\shubh\Desktop\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exp
   CUDA 11.0 Runtime1.vcxproj -> C:\Users\shubh\Desktop\CV_CUDA\x64\Debug\CUDA 11.0 Runtime1.exe
