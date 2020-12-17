@@ -1,7 +1,6 @@
 # CUDA implementations of various Computer Vision Algorithms 
 
-Project's executable for windows can be downloaded [here](https://github.com/Attendo-App/CV_CUDA/releases/tag/v1.0). However, due to discrepancies in OpenCV and CUDA versions,
-The executable might not run. In such cases and for other Operating Systems, you can build the project by setting up the Visual Studio project for yourself.
+Project's executable for windows can be downloaded [here](https://github.com/Attendo-App/CV_CUDA/releases/tag/v1.0). In the release, try running the normal version once and if it doesn't work, try the 420 version. However, due to discrepancies in OpenCV and CUDA versions, both the executable might not run on your computer. In such cases and for other Operating Systems, you can build the project by setting up the Visual Studio project for yourself.
 
 ### Algorithms implemented :computer: 
   - Sobel Filter
